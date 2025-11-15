@@ -23,6 +23,20 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
         }
     }
 
+    // Added a click listener interface + field *Added 15 Nov
+    // NEW: click listener
+    public interface OnItemClickListener {
+        void onItemClick(CurrencyItem item);
+    }
+
+    private OnItemClickListener listener;
+
+    // Setter added for listener
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
+
+
     public void updateData(List<CurrencyItem> newItems) {
         if (newItems == null) {
             this.items = new ArrayList<>();
