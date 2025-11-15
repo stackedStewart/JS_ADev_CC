@@ -45,8 +45,17 @@ public class ConverterActivity extends AppCompatActivity {
         buttonConvert = findViewById(R.id.buttonConvert);
         textResult = findViewById(R.id.textResult);
 
+
+        if (currencyCode == null) {
+            currencyCode = "###";
+        }
+
+        // Set labels that include the code
+        radioGbpToOther.setText("GBP \u2192 " + currencyCode);
+        radioOtherToGbp.setText(currencyCode + " \u2192 GBP");
+
         // Set initial text
-        textHeader.setText("GBP ↔ " + currencyCode);
+        textHeader.setText("GBP \u2194 " + currencyCode);
         textRateInfo.setText(String.format(Locale.UK, "1 GBP = %.4f %s", rate, currencyCode));
 
         // Default direction: GBP > other
