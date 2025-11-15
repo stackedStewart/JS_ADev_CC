@@ -80,6 +80,14 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
             bgColor = Color.parseColor("#BBDEFB"); // light blue
         }
         holder.itemView.setBackgroundColor(bgColor);
+
+        // Hooked the click into onBindViewHandler
+        // NEW: handling clicks * added nov 15
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(item);
+            }
+        });
     }
 
     @Override
