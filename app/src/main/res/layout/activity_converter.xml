@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GBP ↔ XXX"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:paddingBottom="8dp" />
+
+    <TextView
+        android:id="@+id/textRateInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1 GBP = 0.0000 XXX"
+        android:paddingBottom="16dp" />
+
+    <EditText
+        android:id="@+id/editAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="numberDecimal"
+        android:hint="Enter amount" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupDirection"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp">
+
+        <RadioButton
+            android:id="@+id/radioGbpToOther"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GBP → Currency" />
+
+        <RadioButton
+            android:id="@+id/radioOtherToGbp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Currency → GBP"
+            android:layout_marginStart="16dp" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/buttonConvert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Convert" />
+
+    <TextView
+        android:id="@+id/textResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingTop="16dp" />
+</LinearLayout>

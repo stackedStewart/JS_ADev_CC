@@ -13,6 +13,7 @@
 // UPDATE THE PACKAGE NAME to include your Student Identifier
 package org.me.gcu.stewart_john_s2433454;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -65,6 +66,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         currencyAdapter = new CurrencyAdapter(currencyItems);
         recyclerView.setAdapter(currencyAdapter);
+
+        // when a row is clicked, open Converter Activity
+        currencyAdapter.setOnItemClickListener(item -> {
+            Intent intent = new Intent(MainActivity.this, ConverterActivity.class);
+            intent.putExtra("code", item.getCurrencyCode());
+            intent.putExtra("rate", item.getRate());
+            intent.putExtra("title", item.getTitle());
+            startActivity(intent);
+        });
     }
 
     @Override
