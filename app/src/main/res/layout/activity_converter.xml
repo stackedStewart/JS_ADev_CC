@@ -40,13 +40,13 @@
             android:id="@+id/radioGbpToOther"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="GBP → Currency" />
+            android:text="GBP → ?" />
 
         <RadioButton
             android:id="@+id/radioOtherToGbp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Currency → GBP"
+            android:text="? → GBP"
             android:layout_marginStart="16dp" />
     </RadioGroup>
 
