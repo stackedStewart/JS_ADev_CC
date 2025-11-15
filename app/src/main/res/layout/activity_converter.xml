@@ -24,9 +24,9 @@
     <EditText
         android:id="@+id/editAmount"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:hint="Enter amount" />
+        android:layout_height="90dp"
+        android:hint="Enter amount"
+        android:inputType="numberDecimal" />
 
     <RadioGroup
         android:id="@+id/radioGroupDirection"
@@ -40,21 +40,15 @@
             android:id="@+id/radioGbpToOther"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="GBP → ?" />
+            android:text="GBP → ###" />
 
         <RadioButton
             android:id="@+id/radioOtherToGbp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="? → GBP"
+            android:text="### → GBP"
             android:layout_marginStart="16dp" />
     </RadioGroup>
-
-    <Button
-        android:id="@+id/buttonConvert"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Convert" />
 
     <TextView
         android:id="@+id/textResult"
@@ -63,4 +57,10 @@
         android:textSize="18sp"
         android:textStyle="bold"
         android:paddingTop="16dp" />
+
+    <Button
+        android:id="@+id/buttonConvert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Convert" />
 </LinearLayout>
