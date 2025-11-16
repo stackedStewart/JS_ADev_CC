@@ -64,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startButton = findViewById(R.id.startButton);
         startButton.setOnClickListener(this);
 
+        searchView = findViewById(R.id.searchView);
+
         recyclerView = findViewById(R.id.recyclerViewCurrencies);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -81,6 +83,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // set up search behaviour
         setupSearch();
+    }
+
+    private void setupSearch() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+           @Override
+           public boolean onQueryTextSubmit(String query) {
+               filterCurrencies(query);
+               return true;
+           }
+
+           @Override
+            public boolean onQueryTextChange(String newText) {
+                filterCurrencies(newText);
+                return true;
+            }
+
+        });
+    }
+
+    private void filterCurrencies(String query) {
+        if (allCurrencyItems == null) return;
+
+        String lowerQuery = query == null ? "" : query.toLowerCase(Locale.ROOT);
+
+        filteredCurrencyItems.clear();
+
+        if (lowerQuery.isEmpty()) {
+            // no query -> show all
+            filteredCurrencyItems.addAll(allCurrencyItems);
+        } else {
+            for (CurrencyItem item : allCurrencyItems) {
+                String code = item.getCurrencyCode() != null ? item.getCurrencyCode().toLowerCase(Locale.ROOT)
+                        : "";
+
+                String title = item.getTitle() != null
+                        ? item.getTitle().toLowerCase(Locale.ROOT)
+                        : "";
+
+                String description = item.getDescription() != null
+                        ? item.getDescription().toLowerCase(Locale.ROOT)
+                        : "";
+
+                // match by code, title or description (covers currency name & country)
+                if (code.contains(lowerQuery)
+                        || title.contains(lowerQuery)
+                        || description.contains(lowerQuery)) {
+                    filteredCurrencyItems.add(item);
+                }
+            }
+        }
+
+        currencyAdapter.updateData(filteredCurrencyItems);
     }
 
     @Override
@@ -203,15 +257,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     eventType = xpp.next();
                 }
 
-                currencyItems = parsedItems;
+//                currencyItems = parsedItems;
+//
+//
+//                // Update UI from the background thread
+//                MainActivity.this.runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        Log.d("UI thread", "I am the UI thread (RecyclerView view)");
+//                        currencyAdapter.updateData(currencyItems);
+//                    }
+//                });
 
+                allCurrencyItems = parsedItems;
+                filteredCurrencyItems = new ArrayList<>(allCurrencyItems);
 
-                // Update UI from the background thread
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Log.d("UI thread", "I am the UI thread (RecyclerView view)");
-                        currencyAdapter.updateData(currencyItems);
+                        currencyAdapter.updateData(filteredCurrencyItems);
                     }
                 });
 
