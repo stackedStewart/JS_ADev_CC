@@ -47,12 +47,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String result;
     private String urlSource = "https://www.fx-exchange.com/gbp/rss.xml";
 
-    // NEW: list to hold all parsed items
-    private List<CurrencyItem> currencyItems = new ArrayList<>();
-
+    // NEW: changed to separate full + filtered lists
+    private List<CurrencyItem> allCurrencyItems = new ArrayList<>();
+    private List<CurrencyItem> filteredCurrencyItems = new ArrayList<>();
     // NEW
     private RecyclerView recyclerView;
     private CurrencyAdapter currencyAdapter;
+    private SearchView searchView;
+
 
 
     @Override
