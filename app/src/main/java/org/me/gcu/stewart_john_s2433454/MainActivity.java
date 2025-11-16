@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private SearchView searchView;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView = findViewById(R.id.recyclerViewCurrencies);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        currencyAdapter = new CurrencyAdapter(currencyItems);
+        currencyAdapter = new CurrencyAdapter(filteredCurrencyItems);
         recyclerView.setAdapter(currencyAdapter);
 
         // when a row is clicked, open Converter Activity
@@ -79,6 +78,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             intent.putExtra("title", item.getTitle());
             startActivity(intent);
         });
+
+        // set up search behaviour
+        setupSearch();
     }
 
     @Override
