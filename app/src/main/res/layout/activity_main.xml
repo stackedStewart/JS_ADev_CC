@@ -8,12 +8,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/salutation"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/title_main"
-            android:textSize="20sp" />
+        <include
+            layout="@layout/view_app_title" />
+
 
         <Button
             android:id="@+id/startButton"
