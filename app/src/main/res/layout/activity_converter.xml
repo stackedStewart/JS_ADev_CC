@@ -25,6 +25,7 @@
         android:id="@+id/editAmount"
         android:layout_width="match_parent"
         android:layout_height="90dp"
+        android:autofillHints="Enter Amount"
         android:hint="Enter amount"
         android:inputType="numberDecimal" />
 

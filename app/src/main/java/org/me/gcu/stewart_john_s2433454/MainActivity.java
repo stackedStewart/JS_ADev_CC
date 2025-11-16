@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 int eventType = xpp.getEventType();
 
-// local list to build on this background thread
+                // local list to build on this background thread
                 List<CurrencyItem> parsedItems = new ArrayList<>();
 
                 CurrencyItem currentItem = null;
@@ -196,24 +196,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                     eventType = xpp.next();
                 }
-
-// copy into field so whole Activity can use it (e.g. RecyclerView later)
-                currencyItems = parsedItems;
-
-// for now, build a string from the list so we still see something
-//                StringBuilder sb = new StringBuilder();
-//                sb.append("Last updated: ").append(lastBuildDate).append("\n\n");
-//                int index = 1;
-//                for (CurrencyItem item : currencyItems) {
-//                    sb.append("===== ITEM ").append(index++).append(" =====\n");
-//                    sb.append("Code: ").append(item.getCurrencyCode()).append("\n");
-//                    sb.append("Rate: ").append(item.getRate()).append("\n");
-//                    sb.append("Title: ").append(item.getTitle()).append("\n");
-//                    sb.append("Description: ").append(item.getDescription()).append("\n");
-//                    sb.append("PubDate: ").append(item.getPubDate()).append("\n\n");
-//                }
-
-                //final String parsedOutput = sb.toString();
 
                 currencyItems = parsedItems;
 
