@@ -257,17 +257,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     eventType = xpp.next();
                 }
 
-//                currencyItems = parsedItems;
-//
-//
-//                // Update UI from the background thread
-//                MainActivity.this.runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Log.d("UI thread", "I am the UI thread (RecyclerView view)");
-//                        currencyAdapter.updateData(currencyItems);
-//                    }
-//                });
 
                 allCurrencyItems = parsedItems;
                 filteredCurrencyItems = new ArrayList<>(allCurrencyItems);
