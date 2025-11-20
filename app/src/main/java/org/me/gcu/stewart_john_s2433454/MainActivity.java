@@ -55,6 +55,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CurrencyAdapter currencyAdapter;
     private SearchView searchView;
 
+    // added 18-11
+    private RecyclerView mainRecyclerView;
+    private CurrencyAdapter mainCurrencyAdapter;
+
+    private List<CurrencyItem> mainCurrencyItems = new ArrayList<>();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,18 +75,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         recyclerView = findViewById(R.id.recyclerViewCurrencies);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         currencyAdapter = new CurrencyAdapter(filteredCurrencyItems);
         recyclerView.setAdapter(currencyAdapter);
 
-        // when a row is clicked, open Converter Activity
-        currencyAdapter.setOnItemClickListener(item -> {
+        // Added 18-11
+        mainRecyclerView = findViewById(R.id.recyclerViewMainCurrencies);
+        LinearLayoutManager mainLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        //LinearLayoutManager mainLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        mainRecyclerView.setLayoutManager(mainLayoutManager);
+        mainCurrencyAdapter = new CurrencyAdapter(mainCurrencyItems);
+        mainRecyclerView.setAdapter(mainCurrencyAdapter);
+
+        CurrencyAdapter.OnItemClickListener clickListener = item -> {
             Intent intent = new Intent(MainActivity.this, ConverterActivity.class);
             intent.putExtra("code", item.getCurrencyCode());
             intent.putExtra("rate", item.getRate());
             intent.putExtra("title", item.getTitle());
             startActivity(intent);
-        });
+        };
+
+        // Added 18-11
+        currencyAdapter.setOnItemClickListener(clickListener);
+        mainCurrencyAdapter.setOnItemClickListener(clickListener);
 
         // set up search behaviour
         setupSearch();
@@ -261,11 +278,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 allCurrencyItems = parsedItems;
                 filteredCurrencyItems = new ArrayList<>(allCurrencyItems);
 
+                // Added 18-11
+                List<String> mainCodes = new ArrayList<>();
+                mainCodes.add("USD");
+                mainCodes.add("EUR");
+                mainCodes.add("JPY");
+
+                List<CurrencyItem> mains = new ArrayList<>();
+
+                for (String code : mainCodes) {
+                    for (CurrencyItem item : allCurrencyItems) {
+                        if (code.equalsIgnoreCase(item.getCurrencyCode())) {
+                            mains.add(item);
+                            break; // only first match per code
+                        }
+                    }
+                }
+
+                mainCurrencyItems = mains;
+
+
                 MainActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         Log.d("UI thread", "I am the UI thread (RecyclerView view)");
                         currencyAdapter.updateData(filteredCurrencyItems);
+                        mainCurrencyAdapter.updateData(mainCurrencyItems);
                     }
                 });
 
