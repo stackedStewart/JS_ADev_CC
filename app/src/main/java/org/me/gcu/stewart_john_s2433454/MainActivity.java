@@ -19,6 +19,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -39,6 +42,8 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -61,12 +66,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private List<CurrencyItem> mainCurrencyItems = new ArrayList<>();
 
+    // Threading and auto-update
+    private ExecutorService executorService;
+    private Handler mainHandler;
+    private static final long REFRESH_INTERVAL_MS = 10 * 60 * 1000; // this equals 10 minutes
 
+    private final Runnable autoRefreshRunnable = new Runnable() {
+        @Override
+        public void run() {
+            startProgress(); // fetch latest data
+            // Schedule for next refresh
+            mainHandler.postDelayed(this, REFRESH_INTERVAL_MS);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mainHandler = new Handler(Looper.getMainLooper());
+        executorService = Executors.newSingleThreadExecutor();
 
         startButton = findViewById(R.id.startButton);
         startButton.setOnClickListener(this);
@@ -100,17 +119,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // set up search behaviour
         setupSearch();
+
+        // Auto-load data when the app starts
+        startProgress();
+
+        // Scheduling periodic refresh
+        mainHandler.postDelayed(autoRefreshRunnable, REFRESH_INTERVAL_MS);
     }
 
     private void setupSearch() {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-           @Override
-           public boolean onQueryTextSubmit(String query) {
-               filterCurrencies(query);
-               return true;
-           }
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filterCurrencies(query);
+                return true;
+            }
 
-           @Override
+            @Override
             public boolean onQueryTextChange(String newText) {
                 filterCurrencies(newText);
                 return true;
@@ -160,9 +185,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void startProgress() {
-        // Run network access on a separate thread;
-        new Thread(new Task(urlSource)).start();
+        if (executorService == null || executorService.isShutdown()) {
+            executorService = Executors.newSingleThreadExecutor();
+        }
+
+        executorService.execute(new Task(urlSource));
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (executorService != null) {
+            executorService.shutdown();
+        }
+        if (mainHandler != null) {
+            mainHandler.removeCallbacks(autoRefreshRunnable);
+        }
+    }
+
+    private void showErrorMessage(final String message) {
+        if (mainHandler == null) return;
+        mainHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     // Need separate thread to access the internet resource over network
     // Other neater solutions should be adopted in later iterations.
@@ -177,28 +227,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void run() {
 
-            // Clear previous result
-            result = "";
-
-            URL aurl;
-            URLConnection yc;
-            BufferedReader in = null;
-            String inputLine;
-
             Log.d("MyTask", "in run");
+            BufferedReader in = null;
 
             try {
                 Log.d("MyTask", "in try");
-                aurl = new URL(url);
-                yc = aurl.openConnection();
+                URL aurl = new URL(url);
+                URLConnection yc = aurl.openConnection();
                 in = new BufferedReader(new InputStreamReader(yc.getInputStream()));
 
+                String inputLine;
+                result = "";
                 while ((inputLine = in.readLine()) != null) {
                     result = result + inputLine;
                 }
-                in.close();
+
+                // basic sanity check
+                if (result == null || result.isEmpty()) {
+                    showErrorMessage("No data received from server");
+                    return;
+                }
+
             } catch (IOException ae) {
                 Log.e("MyTask", "ioexception: " + ae);
+                showErrorMessage("Failed to download data. Please check your internet connection.");
+                return;  // stop here so parsing doesn't run with empty result
             }
 
             // Clean up any leading garbage characters
@@ -297,21 +350,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 mainCurrencyItems = mains;
 
-
-                MainActivity.this.runOnUiThread(new Runnable() {
+                // Update UI using Handler instead of runOnUiThread
+                mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d("UI thread", "I am the UI thread (RecyclerView view)");
                         currencyAdapter.updateData(filteredCurrencyItems);
                         mainCurrencyAdapter.updateData(mainCurrencyItems);
                     }
                 });
 
-            } catch (XmlPullParserException e) {
-                Log.e("Parsing", "EXCEPTION " + e);
             } catch (Exception e) {
-                // catch-all just in case something else goes wrong while parsing
-                Log.e("Parsing", "Unexpected exception " + e);
+                Log.e("MyTask", "Error loading data", e);
+                showErrorMessage("Failed to load currency data. Please check your internet connection.");
+            } finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (Exception ignored) {
+                    }
+                }
             }
         }
     }
