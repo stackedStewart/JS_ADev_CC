@@ -99,8 +99,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Added 18-11
         mainRecyclerView = findViewById(R.id.recyclerViewMainCurrencies);
-        LinearLayoutManager mainLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        //LinearLayoutManager mainLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        //LinearLayoutManager mainLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        LinearLayoutManager mainLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         mainRecyclerView.setLayoutManager(mainLayoutManager);
         mainCurrencyAdapter = new CurrencyAdapter(mainCurrencyItems);
         mainRecyclerView.setAdapter(mainCurrencyAdapter);
