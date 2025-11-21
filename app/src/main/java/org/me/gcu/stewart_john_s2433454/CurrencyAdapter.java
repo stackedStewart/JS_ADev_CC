@@ -18,10 +18,11 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
 
     private List<CurrencyItem> items = new ArrayList<>();
 
-    public CurrencyAdapter(List<CurrencyItem> items) {
-        if (items != null) {
-            this.items = items;
-        }
+    private boolean isMainSummary = false;
+
+    public CurrencyAdapter(List<CurrencyItem> items, boolean isMainSummary) {
+        this.items = items;
+        this.isMainSummary = isMainSummary;
     }
 
 
@@ -76,6 +77,8 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
     @NonNull
     @Override
     public CurrencyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        int layout = isMainSummary ? R.layout.row_main_currency_item : R.layout.row_currency_item;
+
         View rowView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_currency_item, parent, false);
         return new CurrencyViewHolder(rowView);
