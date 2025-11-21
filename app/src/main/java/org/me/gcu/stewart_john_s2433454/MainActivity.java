@@ -23,7 +23,6 @@ import android.widget.Toast;
 import android.os.Handler;
 import android.os.Looper;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
@@ -375,9 +374,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
 
-            } catch (Exception e) {
-                Log.e("MyTask", "Error loading data", e);
-                showErrorMessage("Failed to load currency data. Please check your internet connection.");
+            } catch (XmlPullParserException e) {
+                Log.e("MyTask", "XML parse error", e);
+                showErrorMessage("Parse error in feed.");
+            } catch (IOException e) {
+                Log.e("MyTask", "Network error", e);
+                showErrorMessage("Network error. Check connection.");
             } finally {
                 if (in != null) {
                     try {

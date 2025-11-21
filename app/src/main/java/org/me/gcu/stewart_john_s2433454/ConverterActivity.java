@@ -1,6 +1,5 @@
 package org.me.gcu.stewart_john_s2433454;
 
-import static com.google.android.material.internal.ViewUtils.hideKeyboard;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,7 +7,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
@@ -18,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.MotionEvent;
 
 
 import java.util.Locale;
