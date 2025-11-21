@@ -12,18 +12,8 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <!-- App title (or include your shared title layout here) -->
-        <TextView
-            android:id="@+id/salutation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/title_main"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:paddingTop="16dp"
-            android:paddingBottom="8dp"
-            android:layout_marginBottom="8dp" />
+        <include layout="@layout/view_app_title"/>
+
 
         <Button
             android:id="@+id/startButton"
@@ -44,7 +34,7 @@
             android:id="@+id/textMainCurrenciesLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Main currencies (GBP to USD, EUR, JPY)"
+            android:text="@string/main_currencies_label"
             android:textStyle="bold"
             android:textSize="16sp"
             android:paddingTop="8dp"
@@ -53,8 +43,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewMainCurrencies"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:paddingBottom="8dp" />
 
     </LinearLayout>
@@ -65,6 +54,7 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="2"
-        android:paddingStart="8dp" />
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp" />
 
 </LinearLayout>

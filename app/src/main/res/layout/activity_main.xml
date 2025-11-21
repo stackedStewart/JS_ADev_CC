@@ -32,7 +32,7 @@
             android:id="@+id/textMainCurrenciesLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Main currencies (GBP to USD, EUR, JPY)"
+            android:text="@string/main_currencies_label"
             android:textStyle="bold"
             android:textSize="16sp"
             android:paddingTop="8dp"
@@ -43,14 +43,15 @@
             android:id="@+id/recyclerViewMainCurrencies"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
             android:paddingBottom="8dp" />
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewCurrencies"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false"
             android:paddingTop="8dp" />
 
     </LinearLayout>

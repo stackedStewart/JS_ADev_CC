@@ -2,90 +2,102 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:fillViewport="true"
+    android:padding="16dp"
+    android:paddingBottom="24dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- App title at the top -->
-        <TextView
-            android:id="@+id/textAppTitle"
+        <include layout="@layout/view_app_title" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/title_main"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:paddingBottom="16dp" />
+            android:gravity="start|center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp">
+
+            <ImageView
+                android:id="@+id/buttonBack"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:contentDescription="@string/back"
+                android:padding="4dp"
+                android:src="@android:drawable/ic_menu_revert" />
+        </LinearLayout>
 
         <!-- Converter header -->
         <TextView
             android:id="@+id/textHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="GBP ↔ XXX"
-            android:textStyle="bold"
+            android:paddingBottom="4dp"
+            android:text="@string/converter_header"
             android:textSize="24sp"
-            android:paddingBottom="8dp" />
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textRateInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1 GBP = 0.0000 XXX"
-            android:paddingBottom="24dp" />
+            android:paddingBottom="8dp"
+            android:text="@string/text_rate_info" />
 
         <EditText
             android:id="@+id/editAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:autofillHints="@string/auto_fill_gbp_hint"
+            android:hint="@string/enter_amount"
             android:inputType="numberDecimal"
-            android:hint="Enter amount"
-            android:paddingBottom="8dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#888888"
-            android:layout_marginBottom="16dp" />
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:layout_marginBottom="8dp" />
 
         <RadioGroup
             android:id="@+id/radioGroupDirection"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="16dp">
+            android:orientation="horizontal"
+            android:paddingBottom="8dp">
 
             <RadioButton
                 android:id="@+id/radioGbpToOther"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="GBP → XXX" />
+                android:text="@string/converter_header_gbp_to_other" />
 
             <RadioButton
                 android:id="@+id/radioOtherToGbp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="XXX → GBP"
-                android:layout_marginStart="24dp" />
+                android:layout_marginStart="24dp"
+                android:text="@string/converter_header_other_to_gbp" />
         </RadioGroup>
+
+
 
         <Button
             android:id="@+id/buttonConvert"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Convert" />
+            android:layout_marginBottom="8dp"
+            android:text="@string/convert_button" />
 
         <TextView
             android:id="@+id/textResult"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:layout_marginBottom="24dp"
+            android:text=""
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:paddingTop="24dp"
-            android:text="" />
+            android:textStyle="bold" />
+
 
     </LinearLayout>
 </ScrollView>

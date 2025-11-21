@@ -1,6 +1,15 @@
 <resources>
-    <string name="app_name">Stewart_John_S2433454</string>
-    <string name="title_main">MPD - Currency Converter</string>
-    <string name="button_load">Press to get data</string>
+    <string name="app_name">MPD - Currency Converter</string>
+    <string name="subtitle_name">Live GBP exchange rates</string>
+    <string name="button_load">Refresh</string>
     <string name="search_hint">Search by code, name or country</string>
+    <string name="converter_header">GBP → XXX"</string>
+    <string name="converter_header_gbp_to_other">GBP → XXX"</string>
+    <string name="converter_header_other_to_gbp">XXX → GBP"</string>
+    <string name="text_rate_info">1 GBP = 0.0000 XXX</string>
+    <string name="enter_amount">Enter Amount to Exchange</string>
+    <string name="convert_button">Convert</string>
+    <string name="auto_fill_gbp_hint">0.00</string>
+    <string name="back">Back</string>
+    <string name="main_currencies_label">Main currencies (GBP to USD, EUR, JPY)</string>
 </resources>

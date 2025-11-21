@@ -1,71 +1,105 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="16dp"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:padding="16dp">
 
-    <include
-        layout="@layout/view_app_title" />
-
-
-    <TextView
-        android:id="@+id/textHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="GBP ↔ XXX"
-        android:textStyle="bold"
-        android:textSize="24sp"
-        android:paddingBottom="8dp" />
-
-    <TextView
-        android:id="@+id/textRateInfo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="1 GBP = 0.0000 XXX"
-        android:paddingBottom="16dp" />
-
-    <EditText
-        android:id="@+id/editAmount"
-        android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:autofillHints="Enter Amount"
-        android:hint="Enter amount"
-        android:inputType="numberDecimal" />
-
-    <RadioGroup
-        android:id="@+id/radioGroupDirection"
-        android:orientation="horizontal"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp">
+        android:orientation="vertical">
 
-        <RadioButton
-            android:id="@+id/radioGbpToOther"
+        <!-- Title header (matches main screens) -->
+        <include layout="@layout/view_app_title" />
+
+        <!-- Back button row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start|center_vertical"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:paddingBottom="8dp">
+
+            <ImageView
+                android:id="@+id/buttonBack"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:contentDescription="@string/back"
+                android:padding="4dp"
+                android:src="@android:drawable/ic_menu_revert" />
+        </LinearLayout>
+
+        <!-- Converter header -->
+        <TextView
+            android:id="@+id/textHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="GBP → ###" />
+            android:paddingBottom="4dp"
+            android:text="@string/converter_header"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-        <RadioButton
-            android:id="@+id/radioOtherToGbp"
+        <TextView
+            android:id="@+id/textRateInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="### → GBP"
-            android:layout_marginStart="16dp" />
-    </RadioGroup>
+            android:paddingBottom="12dp"
+            android:text="@string/text_rate_info" />
 
-    <TextView
-        android:id="@+id/textResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:paddingTop="16dp" />
+        <!-- Amount entry -->
+        <EditText
+            android:id="@+id/editAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:hint="@string/enter_amount"
+            android:autofillHints="@string/auto_fill_gbp_hint"
+            android:inputType="numberDecimal"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:layout_marginBottom="8dp" />
 
-    <Button
-        android:id="@+id/buttonConvert"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Convert" />
-</LinearLayout>
+        <!-- Direction -->
+        <RadioGroup
+            android:id="@+id/radioGroupDirection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="12dp">
+
+            <RadioButton
+                android:id="@+id/radioGbpToOther"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/converter_header_gbp_to_other" />
+
+            <RadioButton
+                android:id="@+id/radioOtherToGbp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:text="@string/converter_header_other_to_gbp" />
+        </RadioGroup>
+
+        <!-- Convert button -->
+        <Button
+            android:id="@+id/buttonConvert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/convert_button" />
+
+        <!-- Result -->
+        <TextView
+            android:id="@+id/textResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:text=""
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</ScrollView>
