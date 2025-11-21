@@ -38,13 +38,26 @@
             android:paddingTop="8dp"
             android:paddingBottom="4dp" />
 
+<!--        <TextView-->
+<!--            android:id="@+id/textSwipeHint"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/swipe_hint"-->
+<!--            android:textSize="12sp"-->
+<!--            android:textColor="#888888"-->
+<!--            android:paddingBottom="4dp" />-->
+
         <!-- NEW: horizontal summary list -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewMainCurrencies"
             android:layout_width="match_parent"
-            android:layout_height="110dp"
+            android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             android:paddingBottom="8dp" />
+
+        <View
+            android:layout_height="8dp"
+            android:layout_width="match_parent"/>
 
 
         <androidx.recyclerview.widget.RecyclerView

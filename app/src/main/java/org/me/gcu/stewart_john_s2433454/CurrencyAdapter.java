@@ -16,13 +16,10 @@ import java.util.Locale;
 
 public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder> {
 
-    private List<CurrencyItem> items = new ArrayList<>();
+    private List<CurrencyItem> items;
 
-    private boolean isMainSummary = false;
-
-    public CurrencyAdapter(List<CurrencyItem> items, boolean isMainSummary) {
+    public CurrencyAdapter(List<CurrencyItem> items) {
         this.items = items;
-        this.isMainSummary = isMainSummary;
     }
 
 
@@ -55,35 +52,44 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
         }
 
         switch (code.toUpperCase()) {
-            case "GBP": return R.drawable.flag_gbp;
-            case "USD": return R.drawable.flag_usd;
-            case "EUR": return R.drawable.flag_eur;
-            case "JPY": return R.drawable.flag_jpy;
-            case "AED": return R.drawable.flag_aed;
-            case "AUD": return R.drawable.flag_aud;
-            case "CAD": return R.drawable.flag_cad;
-            case "CHF": return R.drawable.flag_chf;
-            case "CNY": return R.drawable.flag_cny;
-            case "INR": return R.drawable.flag_inr;
-            case "BRL": return R.drawable.flag_brl;
-            case "ZAR": return R.drawable.flag_zar;
-            case "NZD": return R.drawable.flag_nzd;
+            case "GBP":
+                return R.drawable.flag_gbp;
+            case "USD":
+                return R.drawable.flag_usd;
+            case "EUR":
+                return R.drawable.flag_eur;
+            case "JPY":
+                return R.drawable.flag_jpy;
+            case "AED":
+                return R.drawable.flag_aed;
+            case "AUD":
+                return R.drawable.flag_aud;
+            case "CAD":
+                return R.drawable.flag_cad;
+            case "CHF":
+                return R.drawable.flag_chf;
+            case "CNY":
+                return R.drawable.flag_cny;
+            case "INR":
+                return R.drawable.flag_inr;
+            case "BRL":
+                return R.drawable.flag_brl;
+            case "ZAR":
+                return R.drawable.flag_zar;
+            case "NZD":
+                return R.drawable.flag_nzd;
             // add more cases if you have more flags
             default:
                 return R.drawable.flag_unknown;
         }
     }
 
-    @NonNull
+
     @Override
     public CurrencyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        int layout = isMainSummary ? R.layout.row_main_currency_item : R.layout.row_currency_item;
-
         View rowView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.row_currency_item, parent, false);
         return new CurrencyViewHolder(rowView);
-
-
     }
 
     @Override

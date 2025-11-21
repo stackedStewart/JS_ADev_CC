@@ -23,6 +23,7 @@ import android.widget.Toast;
 import android.os.Handler;
 import android.os.Looper;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 
@@ -95,16 +96,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView = findViewById(R.id.recyclerViewCurrencies);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        currencyAdapter = new CurrencyAdapter(filteredCurrencyItems, true);
+        currencyAdapter = new CurrencyAdapter(filteredCurrencyItems);
         recyclerView.setAdapter(currencyAdapter);
 
         // Added 18-11
         mainRecyclerView = findViewById(R.id.recyclerViewMainCurrencies);
-        LinearLayoutManager mainLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager mainLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mainRecyclerView.setLayoutManager(mainLayoutManager);
 
-        mainCurrencyAdapter = new CurrencyAdapter(mainCurrencyItems, true);
+        mainCurrencyAdapter = new CurrencyAdapter(mainCurrencyItems);
         mainRecyclerView.setAdapter(mainCurrencyAdapter);
+
+//        TextView swipeHint = findViewById(R.id.textSwipeHint);
+//
+//        mainRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            boolean hidden = false;
+//
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                if (!hidden && dx != 0 && swipeHint != null) { // they scrolled sideways
+//                    swipeHint.setVisibility(View.GONE);
+//                    hidden = true;
+//                }
+//            }
+//                                              });
 
         CurrencyAdapter.OnItemClickListener clickListener = item -> {
             Intent intent = new Intent(MainActivity.this, ConverterActivity.class);

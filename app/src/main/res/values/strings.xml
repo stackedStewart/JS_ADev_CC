@@ -12,4 +12,5 @@
     <string name="auto_fill_gbp_hint">0.00</string>
     <string name="back">Back</string>
     <string name="main_currencies_label">Main currencies (GBP to USD, EUR, JPY)</string>
+    <string name="swipe_hint">Swipe to see more →</string>
 </resources>
