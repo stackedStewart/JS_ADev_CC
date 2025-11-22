@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //            }
 //        }
         } else {
-            String[] parts = lowerQuery.split("\\s+"); // split aliases into words
+            String[] parts = lowerQuery.split("\\s+"); // split aliases into words for countries
 
             for (CurrencyItem item : allCurrencyItems) {
 
