@@ -51,16 +51,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button startButton;
     private String result;
     private String urlSource = "https://www.fx-exchange.com/gbp/rss.xml";
-
-    // NEW: changed to separate full + filtered lists
     private List<CurrencyItem> allCurrencyItems = new ArrayList<>();
     private List<CurrencyItem> filteredCurrencyItems = new ArrayList<>();
-    // NEW
     private RecyclerView recyclerView;
     private CurrencyAdapter currencyAdapter;
     private SearchView searchView;
 
-    // added 18-11
+
     private RecyclerView mainRecyclerView;
     private CurrencyAdapter mainCurrencyAdapter;
 
@@ -159,19 +156,93 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+
+    private String expandCountryAliases(String query) {
+        if (query == null) return "";
+        String q = query.toLowerCase(Locale.ROOT).trim();
+
+        // Map country nouns -> adjectives / common RSS words
+        switch (q) {
+            case "china":
+                return "china chinese";
+            case "japan":
+                return "japan japanese";
+            case "switzerland":
+                return "switzerland swiss";
+            case "united states":
+            case "usa":
+            case "america":
+                return "united states usa american";
+            case "united kingdom":
+            case "uk":
+            case "britain":
+            case "england":
+                return "united kingdom uk britain british";
+            case "europe":
+            case "eu":
+                return "europe eu euro";
+            case "uae":
+            case "united arab emirates":
+                return "uae emirates emirati";
+            case "australia":
+                return "australia australian";
+            case "canada":
+                return "canada canadian";
+            case "india":
+                return "india indian";
+            case "brazil":
+                return "brazil brazilian";
+            case "south africa":
+                return "south africa african";
+            case "new zealand":
+                return "new zealand zealand";
+            default:
+                return q; // no known alias, keep original
+        }
+    }
+
+
     private void filterCurrencies(String query) {
         if (allCurrencyItems == null) return;
 
-        String lowerQuery = query == null ? "" : query.toLowerCase(Locale.ROOT);
+        //String lowerQuery = query == null ? "" : query.toLowerCase(Locale.ROOT);
+
+        String expanded = expandCountryAliases(query);
+        String lowerQuery = expanded.toLowerCase(Locale.ROOT);
 
         filteredCurrencyItems.clear();
 
         if (lowerQuery.isEmpty()) {
             // no query -> show all
             filteredCurrencyItems.addAll(allCurrencyItems);
+//        } else {
+//            for (CurrencyItem item : allCurrencyItems) {
+//                String code = item.getCurrencyCode() != null ? item.getCurrencyCode().toLowerCase(Locale.ROOT)
+//                        : "";
+//
+//                String title = item.getTitle() != null
+//                        ? item.getTitle().toLowerCase(Locale.ROOT)
+//                        : "";
+//
+//                String description = item.getDescription() != null
+//                        ? item.getDescription().toLowerCase(Locale.ROOT)
+//                        : "";
+//
+//                // match by code, title or description (covers currency name & country)
+//                if (code.contains(lowerQuery)
+//                        || title.contains(lowerQuery)
+//                        || description.contains(lowerQuery)) {
+//                    filteredCurrencyItems.add(item);
+//                }
+//            }
+//        }
         } else {
+            String[] parts = lowerQuery.split("\\s+"); // split aliases into words
+
             for (CurrencyItem item : allCurrencyItems) {
-                String code = item.getCurrencyCode() != null ? item.getCurrencyCode().toLowerCase(Locale.ROOT)
+
+                String code = item.getCurrencyCode() != null
+                        ? item.getCurrencyCode().toLowerCase(Locale.ROOT)
                         : "";
 
                 String title = item.getTitle() != null
@@ -182,14 +253,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         ? item.getDescription().toLowerCase(Locale.ROOT)
                         : "";
 
-                // match by code, title or description (covers currency name & country)
-                if (code.contains(lowerQuery)
-                        || title.contains(lowerQuery)
-                        || description.contains(lowerQuery)) {
+                boolean match = false;
+                for (String p : parts) {
+                    if (p.isEmpty()) continue;
+                    if (code.contains(p) || title.contains(p) || description.contains(p)) {
+                        match = true;
+                        break;
+                    }
+                }
+
+                if (match) {
                     filteredCurrencyItems.add(item);
                 }
             }
         }
+
 
         currencyAdapter.updateData(filteredCurrencyItems);
     }
