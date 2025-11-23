@@ -5,9 +5,9 @@
 */
 
 //
-// Name                 _________________
-// Student ID           _________________
-// Programme of Study   _________________
+// Name                 John Stewart
+// Student ID           S2433454
+// Programme of Study   Bsc/Bsc (Hons) Software Development Year 4
 //
 
 // UPDATE THE PACKAGE NAME to include your Student Identifier
@@ -103,20 +103,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mainCurrencyAdapter = new CurrencyAdapter(mainCurrencyItems);
         mainRecyclerView.setAdapter(mainCurrencyAdapter);
 
-//        TextView swipeHint = findViewById(R.id.textSwipeHint);
-//
-//        mainRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            boolean hidden = false;
-//
-//            @Override
-//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-//                if (!hidden && dx != 0 && swipeHint != null) { // they scrolled sideways
-//                    swipeHint.setVisibility(View.GONE);
-//                    hidden = true;
-//                }
-//            }
-//                                              });
-
         CurrencyAdapter.OnItemClickListener clickListener = item -> {
             Intent intent = new Intent(MainActivity.this, ConverterActivity.class);
             intent.putExtra("code", item.getCurrencyCode());
@@ -125,17 +111,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(intent);
         };
 
-        // Added 18-11
         currencyAdapter.setOnItemClickListener(clickListener);
         mainCurrencyAdapter.setOnItemClickListener(clickListener);
 
-        // set up search behaviour
         setupSearch();
 
-        // Auto-load data when the app starts
         startProgress();
 
-        // Scheduling periodic refresh
         mainHandler.postDelayed(autoRefreshRunnable, REFRESH_INTERVAL_MS);
     }
 
@@ -161,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (query == null) return "";
         String q = query.toLowerCase(Locale.ROOT).trim();
 
-        // Map country nouns -> adjectives / common RSS words
         switch (q) {
             case "china":
                 return "china chinese";
@@ -172,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case "united states":
             case "usa":
             case "america":
-                return "united states usa american";
+                return "united states usa american usd";
             case "united kingdom":
             case "uk":
             case "britain":
@@ -197,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case "new zealand":
                 return "new zealand zealand";
             default:
-                return q; // no known alias, keep original
+                return q;
         }
     }
 
@@ -205,39 +186,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void filterCurrencies(String query) {
         if (allCurrencyItems == null) return;
 
-        //String lowerQuery = query == null ? "" : query.toLowerCase(Locale.ROOT);
-
         String expanded = expandCountryAliases(query);
         String lowerQuery = expanded.toLowerCase(Locale.ROOT);
 
         filteredCurrencyItems.clear();
 
         if (lowerQuery.isEmpty()) {
-            // no query -> show all
+
             filteredCurrencyItems.addAll(allCurrencyItems);
-//        } else {
-//            for (CurrencyItem item : allCurrencyItems) {
-//                String code = item.getCurrencyCode() != null ? item.getCurrencyCode().toLowerCase(Locale.ROOT)
-//                        : "";
-//
-//                String title = item.getTitle() != null
-//                        ? item.getTitle().toLowerCase(Locale.ROOT)
-//                        : "";
-//
-//                String description = item.getDescription() != null
-//                        ? item.getDescription().toLowerCase(Locale.ROOT)
-//                        : "";
-//
-//                // match by code, title or description (covers currency name & country)
-//                if (code.contains(lowerQuery)
-//                        || title.contains(lowerQuery)
-//                        || description.contains(lowerQuery)) {
-//                    filteredCurrencyItems.add(item);
-//                }
-//            }
-//        }
         } else {
-            String[] parts = lowerQuery.split("\\s+"); // split aliases into words for countries
+            String[] parts = lowerQuery.split("\\s+");
 
             for (CurrencyItem item : allCurrencyItems) {
 
@@ -307,8 +265,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    // Need separate thread to access the internet resource over network
-    // Other neater solutions should be adopted in later iterations.
     private class Task implements Runnable {
 
         private String url;
@@ -344,22 +300,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             } catch (IOException ae) {
                 Log.e("MyTask", "ioexception: " + ae);
                 showErrorMessage("Failed to download data. Please check your internet connection.");
-                return;  // stop here so parsing doesn't run with empty result
+                return;
             }
 
-            // Clean up any leading garbage characters
-            int i = result.indexOf("<?"); // initial tag
+
+            int i = result.indexOf("<?");
             if (i >= 0) {
                 result = result.substring(i);
             }
 
-            // Clean up any trailing garbage at the end of the file
-            int endIndex = result.indexOf("</rss>"); // final tag
+
+            int endIndex = result.indexOf("</rss>");
             if (endIndex >= 0) {
                 result = result.substring(0, endIndex + 6);
             }
 
-            // Now that you have the xml data into result, you can parse it
             try {
                 XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
                 factory.setNamespaceAware(true);
@@ -368,7 +323,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 int eventType = xpp.getEventType();
 
-                // local list to build on this background thread
                 List<CurrencyItem> parsedItems = new ArrayList<>();
 
                 CurrencyItem currentItem = null;
@@ -424,7 +378,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 allCurrencyItems = parsedItems;
                 filteredCurrencyItems = new ArrayList<>(allCurrencyItems);
 
-                // Added 18-11
                 List<String> mainCodes = new ArrayList<>();
                 mainCodes.add("USD");
                 mainCodes.add("EUR");
@@ -436,14 +389,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     for (CurrencyItem item : allCurrencyItems) {
                         if (code.equalsIgnoreCase(item.getCurrencyCode())) {
                             mains.add(item);
-                            break; // only first match per code
+                            break;
                         }
                     }
                 }
 
                 mainCurrencyItems = mains;
 
-                // Update UI using Handler instead of runOnUiThread
                 mainHandler.post(new Runnable() {
                     @Override
                     public void run() {
